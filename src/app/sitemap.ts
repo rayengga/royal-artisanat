@@ -35,22 +35,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Dynamic product pages
   let productPages: MetadataRoute.Sitemap = [];
   
-  try {
-    const products = await prisma.product.findMany({
-      select: {
-        id: true,
-        updatedAt: true,
-      },
-    });
+  // Only fetch products if DATABASE_URL is available (production/runtime)
+  if (process.env.DATABASE_URL) {
+    try {
+      const products = await prisma.product.findMany({
+        select: {
+          id: true,
+          updatedAt: true,
+        },
+      });
 
-    productPages = products.map((product) => ({
-      url: `${baseUrl}/product/${product.id}`,
-      lastModified: product.updatedAt,
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
-    }));
-  } catch (error) {
-    console.error('Error fetching products for sitemap:', error);
+      productPages = products.map((product) => ({
+        url: `${baseUrl}/product/${product.id}`,
+        lastModified: product.updatedAt,
+        changeFrequency: 'weekly' as const,
+        priority: 0.8,
+      }));
+    } catch (error) {
+      console.error('Error fetching products for sitemap:', error);
+    }
   }
 
   return [...staticPages, ...productPages];
