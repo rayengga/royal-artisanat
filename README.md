@@ -1,4 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Decory - Laser Engraving eCommerce
+
+Modern eCommerce website for Decory laser engraving business selling engraved leather and wood products.
+
+## 🚀 Tech Stack
+
+- **Frontend**: Next.js 14+ with App Router
+- **Language**: TypeScript
+- **Styling**: TailwindCSS
+- **Animations**: Framer Motion
+- **Database**: PostgreSQL with Prisma ORM
+- **Authentication**: JWT with HTTP-only cookies
+- **State Management**: React Context
+
+## 🛠 Setup Instructions
+
+### Prerequisites
+
+- Node.js 18+ 
+- PostgreSQL database
+- Git
+
+### 1. Clone and Install
+
+```bash
+git clone <repository-url>
+cd decory
+npm install
+```
+
+### 2. Database Setup
+
+#### Option A: Local PostgreSQL
+1. Install PostgreSQL locally
+2. Create a database named `decory_db`
+3. Update the DATABASE_URL in `.env`
+
+#### Option B: Cloud Database (Recommended)
+Use services like:
+- [Neon](https://neon.tech/) (Free tier available)
+- [Supabase](https://supabase.com/) (Free tier available)
+- [Railway](https://railway.app/)
+- [PlanetScale](https://planetscale.com/)
+
+### 3. Environment Variables
+
+Copy `.env.example` to `.env` and update the values:
+
+```bash
+cp .env.example .env
+```
+
+Update these variables in `.env`:
+```env
+DATABASE_URL="postgresql://decory_user:strong_password_here@localhost:5432/decory_db"
+JWT_SECRET="your-super-secret-jwt-key-here"
+```
+
+### 4. Database Migration and Seeding
+
+```bash
+# Push schema to database
+npm run db:push
+
+# Generate Prisma client
+npm run db:generate
+
+# Seed with sample data
+npm run db:seed
+```
 
 ## Getting Started
 
@@ -29,8 +98,54 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+## 🚀 Production Deployment
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Quick Deployment to Vercel + Namecheap Domain
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Prepare for deployment:**
+   ```bash
+   # Run pre-deployment tests
+   ./scripts/pre-deploy-test.sh
+   ```
+
+2. **Set up database** (choose one):
+   - [Neon](https://neon.tech/) - Free PostgreSQL
+   - [Supabase](https://supabase.com/) - Free tier
+   - [Railway](https://railway.app/) - Easy setup
+
+3. **Deploy to Vercel:**
+   ```bash
+   # Install Vercel CLI
+   npm i -g vercel
+   
+   # Deploy
+   vercel --prod
+   ```
+
+4. **Connect Namecheap domain:**
+   - Vercel: Add domain in project settings
+   - Namecheap: Update DNS records (see DEPLOYMENT.md)
+
+### Environment Variables for Production
+```env
+DATABASE_URL="postgresql://user:pass@host:5432/db?sslmode=require"
+JWT_SECRET="your-32-character-secret"
+NEXTAUTH_SECRET="another-32-character-secret"
+NEXTAUTH_URL="https://yourdomain.com"
+NEXT_PUBLIC_SITE_URL="https://yourdomain.com"
+```
+
+📖 **See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed step-by-step instructions.**
+
+## 🧪 Testing
+
+```bash
+# Type checking
+npm run type-check
+
+# Build test
+npm run build && npm run start
+
+# Pre-deployment test
+./scripts/pre-deploy-test.sh
+```
