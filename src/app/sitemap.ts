@@ -1,6 +1,10 @@
 import { MetadataRoute } from 'next';
 import { prisma } from '@/lib/prisma';
 
+// Force dynamic generation at runtime, not build time
+export const dynamic = 'force-dynamic';
+export const revalidate = 3600; // Revalidate every hour
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://royal-artisanat.store';
   
