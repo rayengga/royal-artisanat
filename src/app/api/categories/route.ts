@@ -29,10 +29,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(categories)
   } catch (error) {
     console.error('Categories fetch error:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    // Return empty array to prevent frontend crashes when DB is unavailable
+    return NextResponse.json([])
   }
 }
 
