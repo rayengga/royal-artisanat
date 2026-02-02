@@ -42,14 +42,6 @@ const nextConfig: NextConfig = {
     ],
   },
   
-  // ESLint configuration for builds
-  eslint: {
-    // Only run ESLint on these directories during build
-    dirs: ['src'],
-    // Allow production builds to complete even with ESLint errors
-    ignoreDuringBuilds: process.env.NODE_ENV === 'production',
-  },
-  
   // TypeScript configuration
   typescript: {
     // Dangerously allow production builds to successfully complete even if your project has type errors
