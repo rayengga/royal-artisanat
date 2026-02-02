@@ -32,7 +32,8 @@ const ShopByCategories = () => {
       try {
         const response = await fetch('/api/categories?include=products');
         const data = await response.json();
-        setCategories(data || []);
+        // Ensure data is an array
+        setCategories(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error('Error fetching categories:', error);
         setCategories([]);
@@ -145,7 +146,9 @@ const ShopByCategories = () => {
                   transition={{ delay: 0.3 + index * 0.15, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <Link href={`/shop?category=${category.id}`} className="group block">
-                    <motion.div className="relative overflow-hidden bg-gray-100">
+                    <motion.div
+                      className="relative overflow-hidden bg-gray-100"
+                    >
                       {/* Image Container */}
                       <div className="relative aspect-[4/5] overflow-hidden">
                         <Image
@@ -155,24 +158,32 @@ const ShopByCategories = () => {
                           className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                           sizes="(max-width: 768px) 100vw, 50vw"
                         />
+                        
+                        {/* Dark overlay on hover */}
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-500" />
                       </div>
-                    </motion.div>
-                    
-                    {/* Text Below Image */}
-                    <motion.div
-                      initial={{ y: 20, opacity: 0 }}
-                      whileInView={{ y: 0, opacity: 1 }}
-                      transition={{ delay: 0.5 + index * 0.1 }}
-                      className="mt-4"
-                    >
-                      <h3 className="text-xl lg:text-2xl font-light mb-2 tracking-wide text-gray-900">
-                        {category.name}
-                      </h3>
-                      
-                      <div className="flex items-center gap-2 text-gray-600 group-hover:text-gray-900 transition-colors duration-300">
-                        <span className="text-sm font-light tracking-wider uppercase">Découvrir</span>
-                        <ArrowRight className="w-4 h-4" />
+
+                      {/* Text Overlay - Bottom */}
+                      <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8">
+                        <motion.div
+                          initial={{ y: 20, opacity: 0 }}
+                          whileInView={{ y: 0, opacity: 1 }}
+                          transition={{ delay: 0.5 + index * 0.1 }}
+                          className="text-white"
+                        >
+                          <h3 className="text-2xl lg:text-3xl font-light mb-2 tracking-wide">
+                            {category.name}
+                          </h3>
+                          
+                          <div className="flex items-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <span className="text-sm font-light tracking-wider uppercase">Découvrir</span>
+                            <ArrowRight className="w-5 h-5" />
+                          </div>
+                        </motion.div>
                       </div>
+
+                      {/* Gradient overlay for text readability */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none" />
                     </motion.div>
                   </Link>
                 </motion.div>
@@ -208,9 +219,10 @@ const ShopByCategories = () => {
                                 scale: index === currentSlide ? 1 : 0.98
                               }}
                               transition={{ duration: 0.5 }}
+                              className="group relative overflow-hidden bg-gray-100"
                             >
                               {/* Image Container */}
-                              <div className="relative aspect-[3/4] sm:aspect-[4/5] overflow-hidden bg-gray-100">
+                              <div className="relative aspect-[3/4] sm:aspect-[4/5] overflow-hidden">
                                 <Image
                                   src={getCategoryImage(category)}
                                   alt={category.name}
@@ -219,19 +231,27 @@ const ShopByCategories = () => {
                                   sizes="100vw"
                                   priority={index === 0}
                                 />
+                                
+                                {/* Dark overlay */}
+                                <div className="absolute inset-0 bg-black/5" />
                               </div>
 
-                              {/* Text Below Image */}
-                              <div className="mt-4">
-                                <h3 className="text-xl sm:text-2xl font-light mb-2 tracking-wide text-gray-900">
-                                  {category.name}
-                                </h3>
-                                
-                                <div className="flex items-center gap-2 text-gray-600">
-                                  <span className="text-sm font-light tracking-wider uppercase">Découvrir</span>
-                                  <ArrowRight className="w-4 h-4" />
+                              {/* Text Overlay - Bottom */}
+                              <div className="absolute bottom-0 left-0 right-0 p-6">
+                                <div className="text-white">
+                                  <h3 className="text-2xl sm:text-3xl font-light mb-2 tracking-wide">
+                                    {category.name}
+                                  </h3>
+                                  
+                                  <div className="flex items-center gap-3">
+                                    <span className="text-sm font-light tracking-wider uppercase">Découvrir</span>
+                                    <ArrowRight className="w-5 h-5" />
+                                  </div>
                                 </div>
                               </div>
+
+                              {/* Gradient overlay */}
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent pointer-events-none" />
                             </motion.div>
                           </Link>
                         </motion.div>

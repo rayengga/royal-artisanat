@@ -27,7 +27,8 @@ const FeaturedProducts = () => {
       try {
         const response = await fetch('/api/products?limit=3');
         const data = await response.json();
-        setFeaturedProducts(data.products || []);
+        // Ensure we have an array of products
+        setFeaturedProducts(Array.isArray(data.products) ? data.products : (Array.isArray(data) ? data : []));
       } catch (error) {
         console.error('Error fetching products:', error);
         setFeaturedProducts([]);
